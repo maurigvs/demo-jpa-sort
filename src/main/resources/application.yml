@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:2222/demo_sort_db
-    username: app
-    password: pass
+    username: maestro
+    password: maestropw
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
