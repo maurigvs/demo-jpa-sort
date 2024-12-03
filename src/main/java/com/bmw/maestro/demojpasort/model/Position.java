@@ -1,44 +1,47 @@
 package com.bmw.maestro.demojpasort.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table
 public class Position {
 
-    public static final String TEXT_A = "textA";
-    public static final String TEXT_B = "textB";
-    public static final String TEXT_C = "textC";
-    public static final String TEXT_D = "textD";
-    public static final String TEXT_E = "textE";
-    public static final String TEXT_F = "textF";
+    public static final String ID_FIELD = "id";
+    public static final String COMMENT_FIELD = "comment";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "text_a")
-    private String textA;
+    private String comment;
 
-    @Column(name = "text_b")
-    private String textB;
+    @ManyToOne
+    @JoinColumn(name = "equipment_category_id")
+    private EquipmentCategory equipmentCategory;
 
-    @Column(name = "text_c")
-    private String textC;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private PositionStatus status;
 
-    @Column(name = "text_d")
-    private String textD;
+    @ManyToOne
+    @JoinColumn(name = "realization_status_id")
+    private RealizationStatus realizationStatus;
 
-    @Column(name = "text_e")
-    private String textE;
+    public Position() {
+    }
 
-    @Column(name = "text_f")
-    private String textF;
+    public Position(String comment, EquipmentCategory equipmentCategory, PositionStatus status, RealizationStatus realizationStatus) {
+        this.comment = comment;
+        this.equipmentCategory = equipmentCategory;
+        this.status = status;
+        this.realizationStatus = realizationStatus;
+    }
 
     public long getId() {
         return id;
@@ -48,62 +51,44 @@ public class Position {
         this.id = id;
     }
 
-    public String getTextA() {
-        return textA;
+    public String getComment() {
+        return comment;
     }
 
-    public void setTextA(String textA) {
-        this.textA = textA;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getTextB() {
-        return textB;
+    public EquipmentCategory getEquipmentCategory() {
+        return equipmentCategory;
     }
 
-    public void setTextB(String textB) {
-        this.textB = textB;
+    public void setEquipmentCategory(EquipmentCategory equipmentCategory) {
+        this.equipmentCategory = equipmentCategory;
     }
 
-    public String getTextC() {
-        return textC;
+    public PositionStatus getStatus() {
+        return status;
     }
 
-    public void setTextC(String textC) {
-        this.textC = textC;
+    public void setStatus(PositionStatus status) {
+        this.status = status;
     }
 
-    public String getTextD() {
-        return textD;
+    public RealizationStatus getRealizationStatus() {
+        return realizationStatus;
     }
 
-    public void setTextD(String textD) {
-        this.textD = textD;
-    }
-
-    public String getTextE() {
-        return textE;
-    }
-
-    public void setTextE(String textE) {
-        this.textE = textE;
-    }
-
-    public String getTextF() {
-        return textF;
-    }
-
-    public void setTextF(String textF) {
-        this.textF = textF;
+    public void setRealizationStatus(RealizationStatus realizationStatus) {
+        this.realizationStatus = realizationStatus;
     }
 
     @Override
     public String toString() {
         return id +
-                ", " + textA +
-                ", " + textB +
-                ", " + textC +
-                ", " + textD +
-                ", " + textE +
-                ", " + textF;
+                ", " + comment +
+                ", " + equipmentCategory +
+                ", " + status +
+                ", " + realizationStatus;
     }
 }
