@@ -8,3 +8,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  sql:
+    init:
+      data-locations: classpath:starter_data.sql
+#      mode: always

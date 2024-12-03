@@ -9,5 +9,4 @@ public class DemoJpaSortApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoJpaSortApplication.class, args);
     }
-
 }
