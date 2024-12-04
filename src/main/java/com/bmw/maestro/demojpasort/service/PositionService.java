@@ -5,7 +5,7 @@ import com.bmw.maestro.demojpasort.model.Position;
 import com.bmw.maestro.demojpasort.model.PositionStatus;
 import com.bmw.maestro.demojpasort.model.RealizationStatus;
 import com.bmw.maestro.demojpasort.repository.PositionRepository;
-import org.springframework.data.domain.Sort;
+import com.bmw.maestro.demojpasort.utill.SortingParam;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +14,6 @@ import java.util.Random;
 
 @Service
 public class PositionService {
-
-    private static final Sort DEFAULT_SORT = Sort.by(
-            new Sort.Order(Sort.Direction.ASC, "equipmentCategory.name"),
-            new Sort.Order(Sort.Direction.DESC, "status.name"),
-            new Sort.Order(Sort.Direction.ASC, "realizationStatus.name"));
 
     private final PositionRepository positionRepository;
 
@@ -43,7 +38,7 @@ public class PositionService {
         positionRepository.saveAll(positionList);
     }
 
-    public List<Position> findAll() {
-        return positionRepository.findAll(DEFAULT_SORT);
+    public List<Position> findAll(SortingParam param) {
+        return positionRepository.findAll(param.getSortList());
     }
 }
