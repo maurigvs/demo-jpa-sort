@@ -2,7 +2,7 @@ package com.bmw.maestro.demojpasort.controller;
 
 import com.bmw.maestro.demojpasort.model.Position;
 import com.bmw.maestro.demojpasort.service.PositionService;
-import com.bmw.maestro.demojpasort.utill.SortOrderHandler;
+import com.bmw.maestro.demojpasort.utill.SortOrderParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +32,7 @@ public class PositionController {
 
     @GetMapping
     public List<String> getAllPositions(@RequestHeader Map<String, String> params) {
-        return positionService.findAll(new SortOrderHandler(params)).stream()
+        return positionService.findAll(new SortOrderParam(params)).stream()
                 .map(Position::toString).toList();
     }
 }

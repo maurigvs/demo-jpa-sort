@@ -1,5 +1,6 @@
 package com.bmw.maestro.demojpasort.model;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 @Entity
 @Table
@@ -17,6 +20,11 @@ public class Position {
     private long id;
 
     private String comment;
+
+    @Embedded
+    private FinanceData financeData;
+
+    private LocalDate createdDate;
 
     @ManyToOne
     @JoinColumn(name = "equipment_category_id")
@@ -30,14 +38,16 @@ public class Position {
     @JoinColumn(name = "realization_status_id")
     private RealizationStatus realizationStatus;
 
-    public Position() {
-    }
-
-    public Position(String comment, EquipmentCategory equipmentCategory, PositionStatus positionStatus, RealizationStatus realizationStatus) {
+    public Position(String comment, FinanceData financeData, LocalDate createdDate, EquipmentCategory equipmentCategory, PositionStatus positionStatus, RealizationStatus realizationStatus) {
         this.comment = comment;
+        this.financeData = financeData;
+        this.createdDate = createdDate;
         this.equipmentCategory = equipmentCategory;
         this.positionStatus = positionStatus;
         this.realizationStatus = realizationStatus;
+    }
+
+    public Position() {
     }
 
     public long getId() {
@@ -56,6 +66,22 @@ public class Position {
         this.comment = comment;
     }
 
+    public FinanceData getFinanceData() {
+        return financeData;
+    }
+
+    public void setFinanceData(FinanceData financeData) {
+        this.financeData = financeData;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public EquipmentCategory getEquipmentCategory() {
         return equipmentCategory;
     }
@@ -68,8 +94,8 @@ public class Position {
         return positionStatus;
     }
 
-    public void setPositionStatus(PositionStatus status) {
-        this.positionStatus = status;
+    public void setPositionStatus(PositionStatus positionStatus) {
+        this.positionStatus = positionStatus;
     }
 
     public RealizationStatus getRealizationStatus() {
@@ -82,8 +108,9 @@ public class Position {
 
     @Override
     public String toString() {
-        return id +
-                ", " + comment +
+        return id + ", " + comment +
+                ", " + financeData +
+                ", " + createdDate +
                 ", " + equipmentCategory +
                 ", " + positionStatus +
                 ", " + realizationStatus;

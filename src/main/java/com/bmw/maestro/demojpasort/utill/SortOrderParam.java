@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SortOrderHandler {
+public class SortOrderParam {
 
     private static final String OUTER_SPLIT = ";";
     private static final String INNER_SPLIT = ",";
@@ -17,13 +17,16 @@ public class SortOrderHandler {
     */
     private static final Map<String, String> SORTABLE_FIELDS = Map.of(
             "id", "id",
+            "quantity", "financeData.quantity",
+            "value", "financeData.value",
+            "createdDate", "createdDate",
             "equipmentCategory", "equipmentCategory.name",
             "positionStatus", "positionStatus.name",
             "realizationStatus", "realizationStatus.name");
 
     private final List<Sort.Order> orderList;
 
-    public SortOrderHandler(Map<String, String> params) {
+    public SortOrderParam(Map<String, String> params) {
         this.orderList = hasSorting(params) ? mapSortList(params) : mapDefault();
     }
 
@@ -42,7 +45,7 @@ public class SortOrderHandler {
     private static List<Sort.Order> mapSortList(Map<String, String> params) {
         return Arrays.stream(params.get(HEADER_KEY).split(OUTER_SPLIT))
                 .map(param -> param.split(INNER_SPLIT))
-                .map(SortOrderHandler::mapOrder)
+                .map(SortOrderParam::mapOrder)
                 .toList();
     }
 
