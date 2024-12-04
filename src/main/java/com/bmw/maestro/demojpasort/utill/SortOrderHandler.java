@@ -6,21 +6,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SortingParam {
+public class SortOrderHandler {
 
     private static final String OUTER_SPLIT = ";";
     private static final String INNER_SPLIT = ",";
     private static final String HEADER_KEY = "sorting";
 
+    /*
+       Make sure that the values in this Map are the same as the field names in the Position class.
+    */
     private static final Map<String, String> SORTABLE_FIELDS = Map.of(
             "id", "id",
             "equipmentCategory", "equipmentCategory.name",
-            "status", "status.name",
+            "positionStatus", "positionStatus.name",
             "realizationStatus", "realizationStatus.name");
 
     private final List<Sort.Order> orderList;
 
-    public SortingParam(Map<String, String> params) {
+    public SortOrderHandler(Map<String, String> params) {
         this.orderList = hasSorting(params) ? mapSortList(params) : mapDefault();
     }
 
@@ -28,39 +31,35 @@ public class SortingParam {
         return Sort.by(orderList);
     }
 
-    private static boolean hasSorting(Map<String, String> params) {
-        return params != null && params.containsKey(HEADER_KEY);
-    }
-
     private List<Sort.Order> mapDefault() {
         return mapSortList(Map.of(HEADER_KEY, "id,asc"));
     }
 
+    private static boolean hasSorting(Map<String, String> params) {
+        return params != null && params.containsKey(HEADER_KEY);
+    }
+
     private static List<Sort.Order> mapSortList(Map<String, String> params) {
-        return Arrays.stream(getFieldParams(params))
-                .map(SortingParam::getSortParams)
-                .map(SortingParam::mapSortOrder)
+        return Arrays.stream(params.get(HEADER_KEY).split(OUTER_SPLIT))
+                .map(param -> param.split(INNER_SPLIT))
+                .map(SortOrderHandler::mapOrder)
                 .toList();
     }
 
-    private static String[] getFieldParams(Map<String, String> headerMap) {
-        return headerMap.get(HEADER_KEY).split(OUTER_SPLIT);
-    }
+    private static Sort.Order mapOrder(String[] params) {
+        if(params.length != 2)
+            throw new IllegalArgumentException("Field name or sort order is missing in: %s"
+                    .formatted(String.join(",", params)));
 
-    private static String[] getSortParams(String params) {
-        return params.split(INNER_SPLIT);
-    }
-
-    private static Sort.Order mapSortOrder(String[] params) {
         if(Sort.Direction.fromOptionalString(params[1]).isEmpty())
-            throw new IllegalArgumentException("Invalid sort direction: " + params[1]);
+            throw new IllegalArgumentException("Unknown sort order: %s".formatted(params[1]));
 
         return new Sort.Order(Sort.Direction.fromString(params[1]), mapSortField(params[0]));
     }
 
     public static String mapSortField(String field) {
         if(!SORTABLE_FIELDS.containsKey(field))
-            throw new IllegalArgumentException("Invalid field name: " + field);
+            throw new IllegalArgumentException("Unknown field name: %s".formatted(field));
 
         return SORTABLE_FIELDS.get(field);
     }

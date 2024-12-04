@@ -5,7 +5,7 @@ import com.bmw.maestro.demojpasort.model.Position;
 import com.bmw.maestro.demojpasort.model.PositionStatus;
 import com.bmw.maestro.demojpasort.model.RealizationStatus;
 import com.bmw.maestro.demojpasort.repository.PositionRepository;
-import com.bmw.maestro.demojpasort.utill.SortingParam;
+import com.bmw.maestro.demojpasort.utill.SortOrderHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class PositionService {
         positionRepository.saveAll(positionList);
     }
 
-    public List<Position> findAll(SortingParam param) {
+    public List<Position> findAll(SortOrderHandler param) {
         return positionRepository.findAll(param.getSortList());
     }
 }

@@ -12,9 +12,6 @@ import jakarta.persistence.Table;
 @Table
 public class Position {
 
-    public static final String ID_FIELD = "id";
-    public static final String COMMENT_FIELD = "comment";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,7 +24,7 @@ public class Position {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private PositionStatus status;
+    private PositionStatus positionStatus;
 
     @ManyToOne
     @JoinColumn(name = "realization_status_id")
@@ -36,10 +33,10 @@ public class Position {
     public Position() {
     }
 
-    public Position(String comment, EquipmentCategory equipmentCategory, PositionStatus status, RealizationStatus realizationStatus) {
+    public Position(String comment, EquipmentCategory equipmentCategory, PositionStatus positionStatus, RealizationStatus realizationStatus) {
         this.comment = comment;
         this.equipmentCategory = equipmentCategory;
-        this.status = status;
+        this.positionStatus = positionStatus;
         this.realizationStatus = realizationStatus;
     }
 
@@ -67,12 +64,12 @@ public class Position {
         this.equipmentCategory = equipmentCategory;
     }
 
-    public PositionStatus getStatus() {
-        return status;
+    public PositionStatus getPositionStatus() {
+        return positionStatus;
     }
 
-    public void setStatus(PositionStatus status) {
-        this.status = status;
+    public void setPositionStatus(PositionStatus status) {
+        this.positionStatus = status;
     }
 
     public RealizationStatus getRealizationStatus() {
@@ -88,7 +85,7 @@ public class Position {
         return id +
                 ", " + comment +
                 ", " + equipmentCategory +
-                ", " + status +
+                ", " + positionStatus +
                 ", " + realizationStatus;
     }
 }
